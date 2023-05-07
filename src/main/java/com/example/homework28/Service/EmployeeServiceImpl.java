@@ -11,6 +11,12 @@ import java.util.List;
 public class EmployeeServiceImpl implements EmployeeService {
     private List<Employee> EmployeeBook = new ArrayList<>();
 
+    private final ValidatorServiceImpl validatorService;
+
+    public EmployeeServiceImpl(ValidatorServiceImpl validatorService) {
+        this.validatorService = validatorService;
+    }
+
     //    Список сотрудников
     @Override
     public String toStringEmployee(){
@@ -32,7 +38,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     // Добавить сотрудника
     @Override
     public String addNewEmployee(String firstName, String lastName, int department, double salary){
-        Employee forAdd = new Employee(firstName, lastName, department, salary);
+        Employee forAdd = new Employee(
+                validatorService.validateFirstName(firstName),
+                validatorService.validateLastName(lastName),
+                department,
+                salary);
         for (int i = 0; i<EmployeeBook.size(); i++) {
             if (EmployeeBook.get(i).equals(forAdd)) {
                 throw new EmployeeAlreadyAddedException("Сотрудник уже присутвует в списке");
