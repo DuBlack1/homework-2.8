@@ -5,17 +5,22 @@ import com.example.homework28.Exception.EmployeeAlreadyAddedException;
 import com.example.homework28.Exception.EmployeeNotFoundException;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-    private List<Employee> EmployeeBook = new ArrayList<>();
+    private Map<String,Employee> EmployeeBook = new HashMap<>();
 
-    private final ValidatorServiceImpl validatorService;
+    private final ValidatorService validatorService;
 
-    public EmployeeServiceImpl(ValidatorServiceImpl validatorService) {
+    public EmployeeServiceImpl(ValidatorService validatorService) {
         this.validatorService = validatorService;
     }
+
+
+    private String getKey(String name, String surname){ return name + "|" + surname;}
 
     //    Список сотрудников
     @Override
@@ -25,44 +30,44 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     //    Найти сотрудника
     @Override
-    public String findEmployee(String firstName, String lastName, int department, double salary){
-        Employee forFind = new Employee(firstName, lastName, department, salary);
-        for (int i = 0; i<EmployeeBook.size(); i++){
-            if (EmployeeBook.get(i).equals(forFind)){
-                return "Сотрудник найден";
-            }
+    public Employee findEmployee(String firstName, String lastName){
+        String key = getKey(firstName, lastName);
+        if (!EmployeeBook.containsKey(key)) {
+            throw new EmployeeNotFoundException("Сотрудник не найден");
         }
-        throw new EmployeeNotFoundException("Сотрудник не найден");
+        return EmployeeBook.get(key);
     }
 
     // Добавить сотрудника
     @Override
-    public String addNewEmployee(String firstName, String lastName, int department, double salary){
+    public Employee addNewEmployee(String firstName, String lastName, int department, double salary){
         Employee forAdd = new Employee(
                 validatorService.validateFirstName(firstName),
                 validatorService.validateLastName(lastName),
                 department,
                 salary);
-        for (int i = 0; i<EmployeeBook.size(); i++) {
-            if (EmployeeBook.get(i).equals(forAdd)) {
-                throw new EmployeeAlreadyAddedException("Сотрудник уже присутвует в списке");
+        String key = getKey( firstName, lastName);
+            if (EmployeeBook.containsKey(key)) {
+                throw new EmployeeAlreadyAddedException(" такой сотрудник уже есть ");
             }
-        }
-        EmployeeBook.add(forAdd);
-        return "Сотрудник добавлен";
+            else {
+                EmployeeBook.put(key, forAdd);
+                return forAdd;
+            }
     }
 
     //    Удалить сотрудника
-    public String deleteEmployee(String firstName, String lastName, int department, double salary){
-        Employee forRemove = new Employee(firstName, lastName, department, salary);
-        if (EmployeeBook.remove(forRemove)) {
-            return "Сотрудник удален";
+    public Employee deleteEmployee(String firstName, String lastName){
+        String key = getKey( firstName, lastName);
+        if (!EmployeeBook.containsKey(key)) {
+            throw new EmployeeNotFoundException(" Сотрудник не найден ");
         }
-        throw new EmployeeNotFoundException("Сотрудник не найден");
+        return EmployeeBook.remove(key);
     }
 
     public List<Employee> getAll(){
-        return new ArrayList<>(EmployeeBook);
+        return new ArrayList<>(EmployeeBook.values());
     }
+
 
 }

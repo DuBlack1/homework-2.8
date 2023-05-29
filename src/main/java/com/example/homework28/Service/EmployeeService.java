@@ -1,13 +1,19 @@
 package com.example.homework28.Service;
 
+import com.example.homework28.Class.Employee;
+
+import java.util.List;
+
 public interface EmployeeService {
     String toStringEmployee();
 
     //    Найти сотрудника
-    String findEmployee(String firstName, String lastName, int department, double salary);
+    Employee findEmployee(String firstName, String lastName);
     //   добавить сотрудника
-    String addNewEmployee(String firstName, String lastName, int department, double salary);
+    Employee addNewEmployee(String firstName, String lastName, int department, double salary);
 
     //  удалить сотрудника
-    String deleteEmployee(String firstName, String lastName, int department, double salary);
+    Employee deleteEmployee(String firstName, String lastName);
+
+    List<Employee> getAll();
 }

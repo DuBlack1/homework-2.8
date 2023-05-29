@@ -12,9 +12,15 @@ public interface DepartmentService {
     //    Получить Ф. И. О. всех сотрудников по отделам
     Map<Integer, List<Employee>> getAllEmployeesByDepartment();
     //    Найти сотрудника с минимальной зарплатой из определенного отдела
-   Employee minSalaryDepartment(int department);
+   Employee employeeWithMinSalaryByDepartment(int department);
+    //    возвращает минимальную зарплату по департаменту
+    double minSalaryByDepartment(int department);
     //    Найти сотрудника с максимальной зарплатой из определенного отдела
-    Employee maxSalaryDepartment(int department);
-    //    Напечатать всех сотрудников отдела
-    List<Employee> displayFullNameDepartment(int department);
+    Employee employeeWithMaxSalaryByDepartment(int department);
+    //    возвращает максимальную зарплату по департаменту
+    double maxSalaryByDepartment(int department);
+    //    возвращает список сотрудников по департаменту
+    List<Employee> employeesByDepartment(int department);
+    //    возвращает сумму зарплат по департаменту
+    double salaryAmountByDepartment(int department);
 }

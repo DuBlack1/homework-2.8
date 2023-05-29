@@ -1,5 +1,6 @@
 package com.example.homework28.Controller;
 
+import com.example.homework28.Class.Employee;
 import com.example.homework28.Service.EmployeeService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,11 +30,9 @@ public class EmployeeController {
     //    Найти сотрудника
 //    http://localhost:8080/employee/find?firstName=David&lastName=Hkkf
     @GetMapping(path = "/find")
-    public String findEmployee(@RequestParam(name = "firstName") String firstName,
-                               @RequestParam(name = "lastName") String lastName,
-                               @RequestParam(name = "department") int department,
-                               @RequestParam(name = "salary") double salary){
-        return employeeService.findEmployee(firstName, lastName, department, salary);
+    public Employee findEmployee(@RequestParam(name = "firstName") String firstName,
+                                 @RequestParam(name = "lastName") String lastName){
+        return employeeService.findEmployee(firstName, lastName);
     }
 
     //    добавить сотрудника
@@ -41,7 +40,7 @@ public class EmployeeController {
     //    http://localhost:8080/employee/add?firstName=Davna&lastName=Nok&department=4&salary=50
 //    http://localhost:8080/employee/add?firstName=Cet&lastName=Has&department=3&salary=40
     @GetMapping(path = "/add")
-    public String addNewEmployee(@RequestParam(name = "firstName") String firstName,
+    public Employee addNewEmployee(@RequestParam(name = "firstName") String firstName,
                                  @RequestParam(name = "lastName") String lastName,
                                  @RequestParam(name = "department") int department,
                                  @RequestParam(name = "salary") double salary){
@@ -51,10 +50,8 @@ public class EmployeeController {
     //    удалить сотрудника
 //    http://localhost:8080/employee/remove?firstName=David&lastName=Hkkf
     @GetMapping(path = "/remove")
-    public String deleteEmployee(@RequestParam(name = "firstName") String firstName,
-                                 @RequestParam(name = "lastName") String lastName,
-                                 @RequestParam(name = "department") int department,
-                                 @RequestParam(name = "salary") double salary){
-        return employeeService.deleteEmployee(firstName, lastName, department, salary);
+    public Employee deleteEmployee(@RequestParam(name = "firstName") String firstName,
+                                   @RequestParam(name = "lastName") String lastName){
+        return employeeService.deleteEmployee(firstName, lastName);
     }
 }
